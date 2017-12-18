@@ -1,4 +1,4 @@
-#This file is instillation guide for begginers, in their home PC or work PC and Welcome !!!
+#This file is instillation guide for docker basic for begginers to get familar with docker environment and Welcome !!!
 #Docker instillation steps - As of now am uding CentOS-6.x , same for RHEL 6.X
 #=========================================================================================================#
 #Step-1:First create a repo in /etc/yum.repo.d with the name docker.repo which acts as your docker repo 

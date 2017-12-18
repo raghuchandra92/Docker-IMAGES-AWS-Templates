@@ -1,0 +1,34 @@
+#This is general cheet sheet for docker, it includes basic commands with description
+#===================================================================================#
+#
+#
+# $docker version, gives you docker server and client version  you are using
+#
+# $docker info,it has "lsb + lscpu"- information and you can know number of Images,Containers you have
+#
+# All your containers and Images can be seen in  $ /var/lib/docker
+#
+Usually your can refer a container by its name or you can look at first 12 digits of its id
+#
+# To see the current containers that you are running in the system
+docker ps
+#To see the list of containers that you have runned previously
+docker ps -a
+#To see the docker images in your system, you can follow this path, this is generic but follow accroding your system settings 
+cd /var/lib/docker/image/devicemapper/devicemapper/imagedb/content/sha256
+#To pull a specific docker image
+docker pull '$IMAGE:$IMAGEVERSION'
+#Now you have downloaded the image and you want to create a container/instance, but for now lets run in our current shell, using
+docker run -i(run in interactive mode) -t(attach it to terminal/tty) '$IMAGE:$IMAGEVERSION' /bin/bash
+#now in two ways you can know you have entered in you contained, 1st your hostname will be your container id and second is you can,
+#actually execute a command like '$ps -a' and you can see only two process running, which means you are operating in container
+#
+#To get out of container simply type 
+exit #which exits and stops the container
+#to restart the container use 
+docker restart $containername
+#to know the info about docker base image that you have use
+docker inspect $IMAGENAME:IMAGEVERSION
+#Pretty easy way to log into the container is 
+docker attach $containername #the disadvantage with this command is if you exit the conatiner stops 
+ 
