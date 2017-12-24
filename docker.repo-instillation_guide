@@ -1,16 +1,46 @@
-#This file is instillation guide for docker basic for begginers to get familar with docker environment and Welcome !!!
-#Docker instillation steps - As of now am uding CentOS-6.x , same for RHEL 6.X
+#This file is instillation guide for docker[CE/EE] for begginers, Welcome !!
+#So, before going to instillation please refer https://success.docker.com/article/Compatibility_Matrix for heads-up
+#Docker instillation steps - As of now am using CentOS-7.x , same for RedHat 7.x
 #=========================================================================================================#
-#Step-1:First create a repo in /etc/yum.repo.d with the name docker.repo which acts as your docker repo 
+#Step-1:First install docker-ce,i installed using the procedure show below
 #=========================================================================================================#
-[docker repo]
-name=Docker Repository
-baseurl=https://yum.dockerproject.org/repo/main/###lsb/###lsbversion/
-enabled=1
-gpgcheck=1
-gpgkey=https://yum.dockerproject.org/gpg
+#First am installing device mapper to give me the ability to map different types of storage sub systems for my container, note
+#below command work only for centos/redhat. 
+yum install -y yum-utils device-mapper-persistent-data lvm2
+#Now i will cofigure my official docker repository to pull stable images, am using this repo as a production repo, depending on your 
+#software flavour/version you can modify the below https link accrodingly. Now install docker-ce , which docker with docker swarm which
+# isn't available in previous editions. then restart your docker service as show below.
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+yum update
+yum install docker-ce
+systemctl enbale docker
+systemctl start docker
+systemctl status docker
+#Now once installation is done, one root can user docker. if you want to give axis to docker for a normal system user you can do so
+#by adding that person in docker.sock file, below are the commands to that, if you are root then skip below steps 
+cd /var/run
+ls -l # now you see docker.sock file
+usermod -aG docker $username
+#Now logout of the system and login back , now as a normal user you will have access to docker
+
+#=========================================================================================================#
+#Step-2:Now i will make sure i use device mapper for my storage type 
+#=========================================================================================================#
+#you have two kinds of storage, a device mapper and a block storage device which is managed by docker. to know about your default storage type use 
+docker info | grep Storage 
+#by default you see the type as overlay, so to change it into device mapper , with out screwing up your configuration , create
+#a file in /etc/docker as show below
+cd /etc/docker
+vim deamon.json #In that file add below code 
+{
+  "storage-driver":"devicemapper"   #you can add the storage type use use, also refer device mapper documentation for more info 
+}
+systemctl stop docker
+systemctl start docker
+docker info | grep Storage #Now you should see device mapper
+
 #=========================================================================================================================#
-#Step-2:Now run $sudo yum update , to pill latest updates, including cached updates to this particular repo from docker
+#Step-3: vim deamon.json
 #=========================================================================================================================#
 #
 #=========================================================================================================================#
