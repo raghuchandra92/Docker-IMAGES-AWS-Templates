@@ -1,0 +1,9 @@
+docker pull docker.elastic.co/apm/apm-server:7.7.0
+curl -L -O https://raw.githubusercontent.com/elastic/apm-server/7.7/apm-server.docker.yml
+docker run -d \
+  --name=apm-server \
+  --user=apm-server \
+  --volume="$(pwd)/apm-server.docker.yml:/usr/share/apm-server/apm-server.yml:ro" \
+  docker.elastic.co/apm/apm-server:7.7.0 \
+  --strict.perms=false -e \
+  -E output.elasticsearch.hosts=["elasticsearch:9200"]
